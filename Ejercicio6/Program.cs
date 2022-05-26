@@ -4,7 +4,7 @@
 // FECHA:   25/05/2022          //
 //////////////////////////////////
 
-Console.Title = "PoloTic Cordoba - Tarea 6 - GIACOBINI GASTÓN 2022 - v1.0";
+Console.Title = "PoloTic Cordoba - Tarea 6 - GIACOBINI GASTÓN 2022 - v1.1";
 
 int ROWS = 3;
 int COLUMNS = 9;
@@ -19,7 +19,7 @@ for (int amountOfCartons = 0; amountOfCartons < 5; amountOfCartons++)
 
     int whiteSpacesPerRow = 4;
 
-    // Genero los indices para los huecos de las primeras dos filas
+    // Generador de indices para cada hueco de las primeras dos filas
     int[,] indexesPerRowForWhiteSpaces = {
         { -1, -1, -1, -1 },
         { -2, -2, -2, -2 }
@@ -32,23 +32,14 @@ for (int amountOfCartons = 0; amountOfCartons < 5; amountOfCartons++)
             int randomNumber = random.Next(0, 9);
 
             bool isNumberAlreadyInRow = false;
-            for (int i = 0; i < 4; i++)
-            {
-                if (indexesPerRowForWhiteSpaces[iRow, i] == randomNumber)
-                {
-                    isNumberAlreadyInRow = true;
-                    break;
-                }
-            }
-
             bool rowsAreEquals = true;
             for (int i = 0; i < 4; i++)
             {
+                if (indexesPerRowForWhiteSpaces[iRow, i] == randomNumber)
+                    isNumberAlreadyInRow = true;
+
                 if (indexesPerRowForWhiteSpaces[0, i] != indexesPerRowForWhiteSpaces[1, i])
-                {
                     rowsAreEquals = false;
-                    break;
-                }
             }
 
             if (isNumberAlreadyInRow || rowsAreEquals)
@@ -56,7 +47,6 @@ for (int amountOfCartons = 0; amountOfCartons < 5; amountOfCartons++)
             else
                 indexesPerRowForWhiteSpaces[iRow, iColumn] = randomNumber;
         }
-
     }
 
     // Coloco los huecos generados anteriormente en las dos primeras filas
@@ -73,7 +63,7 @@ for (int amountOfCartons = 0; amountOfCartons < 5; amountOfCartons++)
     {
         for (int iCol = 0; iCol < COLUMNS; iCol++)
         {
-            int randomNumber = random.Next(1 + (iCol * 10), (iCol == COLUMNS - 1 ? 11 : 10) + (iCol * 10));
+            int randomNumber = random.Next(1 + (iCol * 10), (iCol == COLUMNS - 1 ? 11 : 10) + (iCol * 10)); // Genero un numero aleatorio entre el rango de la columna actual
 
             bool isInCarton = false;
             foreach (int number in carton)
@@ -83,45 +73,35 @@ for (int amountOfCartons = 0; amountOfCartons < 5; amountOfCartons++)
 
             if (isInCarton) iCol--;
             else if (carton[iRow, iCol] != NUMBER_FOR_WHITE_SPACE) carton[iRow, iCol] = randomNumber;
-
         }
     }
 
-
-    // Coloco los espacios en blanco en la ultima fila
-
-    // Detecta dos numeros consecutivos en columna y coloca un hueco
+    // Coloco los huecos en la ultima fila
+    // --Detecta dos numeros consecutivos en columna y coloca un hueco
     for (int i = 0; i < COLUMNS; i++)
     {
         if (carton[0, i] != NUMBER_FOR_WHITE_SPACE && carton[1, i] != NUMBER_FOR_WHITE_SPACE)
         {
+            if (whiteSpacesPerRow == 0) break;
 
-            if (whiteSpacesPerRow != 0)
-            {
-                carton[2, i] = NUMBER_FOR_WHITE_SPACE;
-                whiteSpacesPerRow--;
-            }
-            else
-                break;
+            carton[2, i] = NUMBER_FOR_WHITE_SPACE;
+            whiteSpacesPerRow--;
         }
     }
 
-    // Si sobraron huecos del paso anterior, aqui de manera aleatoria se van colocando
+    // --Si sobraron huecos del paso anterior, aqui de manera aleatoria se van colocando
     while (whiteSpacesPerRow != 0)
     {
         int randomColumn = random.Next(0, COLUMNS);
-        if (
-            (whiteSpacesPerRow != 0) &&
+
+        if ((whiteSpacesPerRow != 0) &&
             (carton[2, randomColumn] != NUMBER_FOR_WHITE_SPACE) &&
             !(carton[0, randomColumn] == NUMBER_FOR_WHITE_SPACE && carton[1, randomColumn] == NUMBER_FOR_WHITE_SPACE))
         {
             carton[2, randomColumn] = NUMBER_FOR_WHITE_SPACE;
             whiteSpacesPerRow--;
-
         }
-
     }
-
 
     // Muestro el Carton
     for (int iRow = 0; iRow < ROWS; iRow++)
