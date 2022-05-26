@@ -89,6 +89,8 @@ for (int amountOfCartons = 0; amountOfCartons < 5; amountOfCartons++)
 
 
     // Coloco los espacios en blanco en la ultima fila
+
+    // Detecta dos numeros consecutivos en columna y coloca un hueco
     for (int i = 0; i < COLUMNS; i++)
     {
         if (carton[0, i] != NUMBER_FOR_WHITE_SPACE && carton[1, i] != NUMBER_FOR_WHITE_SPACE)
@@ -104,6 +106,7 @@ for (int amountOfCartons = 0; amountOfCartons < 5; amountOfCartons++)
         }
     }
 
+    // Si sobraron huecos del paso anterior, aqui de manera aleatoria se van colocando
     while (whiteSpacesPerRow != 0)
     {
         int randomColumn = random.Next(0, COLUMNS);
