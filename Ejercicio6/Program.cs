@@ -12,7 +12,7 @@ int NUMBER_FOR_WHITE_SPACE = 99;
 
 Random random = new Random();
 
-for (int amountOfCartons = 0; amountOfCartons < 5; amountOfCartons++)
+for (int amountOfCartons = 0; amountOfCartons < 1; amountOfCartons++)
 {
 
     int[,] carton = new int[ROWS, COLUMNS];
@@ -57,25 +57,7 @@ for (int amountOfCartons = 0; amountOfCartons < 5; amountOfCartons++)
             carton[i, indexesPerRowForWhiteSpaces[i, j]] = NUMBER_FOR_WHITE_SPACE;
         }
     }
-
-    // Genero los numeros aleatorios para el carton respetando los huecos de las dos primeras filas
-    for (int iRow = 0; iRow < ROWS; iRow++)
-    {
-        for (int iCol = 0; iCol < COLUMNS; iCol++)
-        {
-            int randomNumber = random.Next(1 + (iCol * 10), (iCol == COLUMNS - 1 ? 11 : 10) + (iCol * 10)); // Genero un numero aleatorio entre el rango de la columna actual
-
-            bool isInCarton = false;
-            foreach (int number in carton)
-            {
-                if (number == randomNumber) isInCarton = true;
-            }
-
-            if (isInCarton) iCol--;
-            else if (carton[iRow, iCol] != NUMBER_FOR_WHITE_SPACE) carton[iRow, iCol] = randomNumber;
-        }
-    }
-
+    
     // Coloco los huecos en la ultima fila
     // --Detecta dos numeros consecutivos en columna y coloca un hueco
     for (int i = 0; i < COLUMNS; i++)
@@ -88,7 +70,6 @@ for (int amountOfCartons = 0; amountOfCartons < 5; amountOfCartons++)
             whiteSpacesPerRow--;
         }
     }
-
     // --Si sobraron huecos del paso anterior, aqui de manera aleatoria se van colocando
     while (whiteSpacesPerRow != 0)
     {
@@ -100,6 +81,27 @@ for (int amountOfCartons = 0; amountOfCartons < 5; amountOfCartons++)
         {
             carton[2, randomColumn] = NUMBER_FOR_WHITE_SPACE;
             whiteSpacesPerRow--;
+        }
+    }
+
+    // Genero los numeros aleatorios para el carton respetando los huecos de las dos primeras filas
+    for (int iRow = 0; iRow < ROWS; iRow++)
+    {
+        for (int iCol = 0; iCol < COLUMNS; iCol++)
+        {
+            int randomNumber = random.Next(
+                (1 + (iCol * 10)), // Min 
+                (((iCol == (COLUMNS - 1)) ? 11 : 10) + (iCol * 10)) // Max
+                ); // Genero un numero aleatorio entre el rango de la columna actual
+
+            bool isInCarton = false;
+            foreach (int number in carton)
+            {
+                if (number == randomNumber) isInCarton = true;
+            }
+
+            if (isInCarton) iCol--;
+            else if (carton[iRow, iCol] != NUMBER_FOR_WHITE_SPACE) carton[iRow, iCol] = randomNumber;
         }
     }
 
