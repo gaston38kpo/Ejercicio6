@@ -46,7 +46,13 @@ for (int amountOfCartons = 0; amountOfCartons < 4; amountOfCartons++)
                 whitespacesIndexesPerRow[iRow, iColumn] = randomIndex;
         }
     }
-
+    /* Ejemplo de output
+    {
+        { 1, 5, 4, 7 },
+        { 5, 3, 6, 0 }
+    }
+    */
+    
     // Coloco los huecos generados anteriormente en las dos primeras filas
     for (int i = 0; i < 2; i++)
     {
@@ -55,7 +61,15 @@ for (int amountOfCartons = 0; amountOfCartons < 4; amountOfCartons++)
             carton[i, whitespacesIndexesPerRow[i, j]] = WHITESPACE;
         }
     }
-
+    /* Ejemplo de output
+    whitespacesIndexesPerRow:       carton(antes):                                  carton(despues):
+    {                               {                                               {
+        { 1, 5, 4, 7 },         +     ->{ 00, 00, 00, 00, 00, 00, 00, 00, 00 },   =    ->{ 00, 99, 00, 00, 99, 99, 00, 99, 00 },
+        { 5, 3, 6, 0 }                ->{ 00, 00, 00, 00, 00, 00, 00, 00, 00 },        ->{ 99, 00, 00, 99, 00, 99, 99, 00, 00 },
+    }                                   { 00, 00, 00, 00, 00, 00, 00, 00, 00 }           { 00, 00, 00, 00, 00, 00, 00, 00, 00 }
+                                    }                                               }
+    */
+    
     // Coloco los huecos en la ultima fila
     // --Detecta dos numeros consecutivos en columna y coloca un hueco 
     int whiteSpacesPerRow = 4;
@@ -71,7 +85,15 @@ for (int amountOfCartons = 0; amountOfCartons < 4; amountOfCartons++)
             whiteSpacesPerRow--;
         }
     }
-
+    /* Ejemplo de output
+    carton(antes):                                  carton(despues):
+    {                                               {              ↓↓                      ↓↓
+        { 00, 99, 00, 00, 99, 99, 00, 99, 00 },   =      { 00, 99, 00, 00, 99, 99, 00, 99, 00 },
+        { 99, 00, 00, 99, 00, 99, 99, 00, 00 },          { 99, 00, 00, 99, 00, 99, 99, 00, 00 },
+      ->{ 00, 00, 00, 00, 00, 00, 00, 00, 00 }         ->{ 00, 00, 99, 00, 00, 00, 00, 00, 99 }  (De 4 huecos por fila usé 2, entonces me sobran otros 2)
+    }                                               }    
+    */
+    
     // --Si sobraron huecos del paso anterior, coloco huecos moviendome de manera aleatoria por las columnas
     while (whiteSpacesPerRow > 0)
     {
@@ -85,7 +107,15 @@ for (int amountOfCartons = 0; amountOfCartons < 4; amountOfCartons++)
             whiteSpacesPerRow--;
         }
     }
-
+    /* Ejemplo de output
+    carton(antes):                                  carton(posibles lugares):                        carton(despues):
+    {                                               {                                                {                                    
+        { 00, 99, 00, 00, 99, 99, 00, 99, 00 },          { 00, 99, 00, 00, 99, 99, 00, 99, 00 },          { 00, 99, 00, 00, 99, 99, 00, 99, 00 },
+        { 99, 00, 00, 99, 00, 99, 99, 00, 00 },          { 99, 00, 00, 99, 00, 99, 99, 00, 00 },          { 99, 00, 00, 99, 00, 99, 99, 00, 00 },
+      ->{ 00, 00, 99, 00, 00, 00, 00, 00, 99 }         ->{ 00, 00, 99, 00, 00, 00, 00, 00, 99 }         ->{ 99, 00, 99, 00, 00, 00, 99, 00, 99 } 
+    }                                               }      ↑↑  ↑↑      ↑↑  ↑↑      ↑↑  ↑↑            }      ↑↑                      ↑↑       
+    */
+    
     // Genero los numeros aleatorios para el carton respetando los huecos de las dos primeras filas
     for (int iRow = 0; iRow < ROWS; iRow++)
     {
@@ -110,7 +140,15 @@ for (int amountOfCartons = 0; amountOfCartons < 4; amountOfCartons++)
                 carton[iRow, iColumn] = randomNumber;
         }
     }
-
+    /* Ejemplo de output
+    carton(antes):                                         carton(despues):
+    {                                               {                                          
+        { 00, 99, 00, 00, 99, 99, 00, 99, 00 },  =      { 05, 99, 28, 37, 99, 99, 64, 99, 90 },
+        { 99, 00, 00, 99, 00, 99, 99, 00, 00 },         { 99, 16, 20, 99, 41, 99, 99, 77, 82 },
+        { 99, 00, 99, 00, 00, 00, 99, 00, 99 }          { 99, 12, 99, 33, 49, 56, 99, 75, 99 } 
+    }                                               }                                          
+    */
+    
     // Muestro el Carton
     for (int iRow = 0; iRow < ROWS; iRow++)
     {
