@@ -12,7 +12,7 @@ int WHITESPACE = 99;
 
 Random random = new Random();
 
-for (int amountOfCartons = 0; amountOfCartons < 1; amountOfCartons++)
+for (int amountOfCartons = 0; amountOfCartons < 4; amountOfCartons++)
 {
 
     int[,] carton = new int[ROWS, COLUMNS];
