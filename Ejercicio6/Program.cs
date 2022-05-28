@@ -12,7 +12,7 @@ int WHITESPACE = 99;
 
 Random random = new Random();
 
-for (int amountOfCartons = 0; amountOfCartons < 4; amountOfCartons++)
+for (int amountOfCartons = 0; amountOfCartons < 6; amountOfCartons++)
 {
 
     int[,] carton = new int[ROWS, COLUMNS];
@@ -137,7 +137,7 @@ for (int amountOfCartons = 0; amountOfCartons < 4; amountOfCartons++)
         for (int iColumn = 0; iColumn < COLUMNS; iColumn++)
         {
             // Genero un numero aleatorio entre el rango de la columna actual
-            int randomNumber = random.Next(
+            int randomNumberForCarton = random.Next(
                 ( 1 + (iColumn * 10) ), // Min: 1 -> 11 -> 21 -> 31 -> ... -> 70 -> 80 
                 ( ((iColumn == (COLUMNS - 1)) ? 11 : 10) + (iColumn * 10) ) // Max 10 -> 20 -> 30 .. -> 80 -> 91 (11 + (8 * 10))
                 ); 
@@ -145,14 +145,17 @@ for (int amountOfCartons = 0; amountOfCartons < 4; amountOfCartons++)
             bool isRandomNumberInCarton = false;
             foreach (int cartonNumber in carton)
             {
-                if (cartonNumber == randomNumber)
+                if (cartonNumber == randomNumberForCarton)
+                {
                     isRandomNumberInCarton = true;
+                    break;
+                }
             }
 
             if (isRandomNumberInCarton)
                 iColumn--;
             else if (carton[iRow, iColumn] != WHITESPACE)
-                carton[iRow, iColumn] = randomNumber;
+                carton[iRow, iColumn] = randomNumberForCarton;
         }
     }
     /* Ejemplo de output
