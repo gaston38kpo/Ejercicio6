@@ -59,11 +59,11 @@ for (int amountOfCartons = 0; amountOfCartons < 4; amountOfCartons++)
     */
 
     // Coloco los huecos generados anteriormente en las dos primeras filas
-    for (int i = 0; i < 2; i++)
+    for (int iRow = 0; iRow < 2; iRow++)
     {
-        for (int j = 0; j < 4; j++)
+        for (int iColumnForWhiteSpace = 0; iColumnForWhiteSpace < 4; iColumnForWhiteSpace++)
         {
-            carton[i, whitespacesIndexesPerRow[i, j]] = WHITESPACE;
+            carton[iRow, whitespacesIndexesPerRow[iRow, iColumnForWhiteSpace]] = WHITESPACE;
         }
     }
     /* Ejemplo de output
@@ -143,9 +143,9 @@ for (int amountOfCartons = 0; amountOfCartons < 4; amountOfCartons++)
                 ); 
 
             bool isRandomNumberInCarton = false;
-            foreach (int number in carton)
+            foreach (int cartonNumber in carton)
             {
-                if (number == randomNumber)
+                if (cartonNumber == randomNumber)
                     isRandomNumberInCarton = true;
             }
 
