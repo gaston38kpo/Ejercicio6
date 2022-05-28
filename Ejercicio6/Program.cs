@@ -138,9 +138,13 @@ for (int amountOfCartons = 0; amountOfCartons < 6; amountOfCartons++)
         {
             // Genero un numero aleatorio entre el rango de la columna actual
             int randomNumberForCarton = random.Next(
-                ( 1 + (iColumn * 10) ), // Min: 1 -> 11 -> 21 -> 31 -> ... -> 70 -> 80 
+                ( ((iColumn == 0) ? 1 : 0) + (iColumn * 10) ), // Min: 1 -> 10 -> 20 -> 30 -> ... -> 70 -> 80 
                 ( ((iColumn == (COLUMNS - 1)) ? 11 : 10) + (iColumn * 10) ) // Max 10 -> 20 -> 30 .. -> 80 -> 91 (11 + (8 * 10))
-                ); 
+                );
+            /* randomNumberForCarton:  ( 1,10) (10,20) (20,30) (30,40) (40,50) (50,60) (60,70) (70,80) (80,91) 
+                rangos            ->  |  1-9  | 10-19 | 20-29 | 30-39 | 40-49 | 50-59 | 60-69 | 70-79 | 80-90 |
+               columnas           ->      c0      c1      c2      c3      c4      c5      c6      c7      c8
+            */
 
             bool isRandomNumberInCarton = false;
             foreach (int cartonNumber in carton)
