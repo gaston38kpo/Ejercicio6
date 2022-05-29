@@ -10,7 +10,7 @@ int ROWS = 3;
 int COLUMNS = 9;
 int WHITESPACE = 99;
 
-Random random = new Random();
+Random RandomInt = new Random();
 
 Console.WriteLine("\n");
 
@@ -20,41 +20,12 @@ for (int amountOfCartons = 0; amountOfCartons < 6; amountOfCartons++)
     int[,] carton = new int[ROWS, COLUMNS];
 
     // Generador de 12 espacios en blanco 2.0
-    // --Pone 9 espacios en blanco en cada una de las 9 Columnas con Fila aleatoria
-    // --(siempre y cuando no supere los 4 por fila)
-    for (int iColumn = 0; iColumn < COLUMNS; iColumn++)
-    {
-        int randomRowIndex = random.Next(0, ROWS);
-
-        int whitespacesInCurrentRow = 0;
-        for (int iColumnChecker = 0; iColumnChecker < COLUMNS; iColumnChecker++)
-            if (carton[randomRowIndex, iColumnChecker] == WHITESPACE)
-                whitespacesInCurrentRow++;
-
-        if (whitespacesInCurrentRow < 4)
-            carton[randomRowIndex, iColumn] = WHITESPACE;
-        else
-            iColumn--;
-    }
-    /* Ejemplo de output
-    ||=============================================||=============================================||
-    ||              carton(antes):                 ||                 carton(despues):            ||
-    ||=============================================||=============================================||
-    || {                                           || {                                           ||
-    ||     { 00, 00, 00, 00, 00, 00, 00, 00, 00 }, ||     { 00, ██, 00, 00, ██, 00, 00, ██, 00 }, ||
-    ||     { 00, 00, 00, 00, 00, 00, 00, 00, 00 }, ||     { ██, 00, 00, ██, 00, ██, ██, 00, 00 }, ||
-    ||     { 00, 00, 00, 00, 00, 00, 00, 00, 00 }  ||     { 00, 00, ██, 00, 00, 00, 00, 00, ██ }  || 
-    || }                                           ||  }                                          ||
-    ||=============================================||=============================================||
-                                                      (De 12 espacios en blanco usé 9 y sobran 3)
-    */
-
     // --Coloca los 3 espacios faltantes
-    int remainingWhitespaces = 3;
-    while (remainingWhitespaces > 0)
+    int whitespaces = 12;
+    while (whitespaces > 0)
     {
-        int randomRowIndex = random.Next(0, ROWS);
-        int randomColumnIndex = random.Next(0, COLUMNS);
+        int randomRowIndex = RandomInt.Next(0, ROWS);
+        int randomColumnIndex = RandomInt.Next(0, COLUMNS);
 
         int whitespacesInCurrentColumn = 0;
         for (int iRowChecker = 0; iRowChecker < ROWS; iRowChecker++)
@@ -67,11 +38,11 @@ for (int amountOfCartons = 0; amountOfCartons < 6; amountOfCartons++)
                 whitespacesInCurrentRow++;
 
         if (carton[randomRowIndex, randomColumnIndex] != WHITESPACE &&
-            whitespacesInCurrentColumn == 1 &&
+            whitespacesInCurrentColumn <= 1 &&
             whitespacesInCurrentRow < 4)
         {
             carton[randomRowIndex, randomColumnIndex] = WHITESPACE;
-            remainingWhitespaces--;
+            whitespaces--;
         }
     }
     /* Ejemplo de output
@@ -79,10 +50,10 @@ for (int amountOfCartons = 0; amountOfCartons < 6; amountOfCartons++)
     ||              carton(antes):                 ||                 carton(despues):            ||
     ||=============================================||=============================================||
     || {                                           || {                                           ||
-    ||     { 00, ░░, 00, 00, ░░, 00, 00, ░░, 00 }, ||     { 00, ░░, 00, 00, ░░, ██, 00, ░░, 00 }, ||
-    ||     { ░░, 00, 00, ░░, 00, ░░, ░░, 00, 00 }, ||     { ░░, 00, 00, ░░, 00, ░░, ░░, 00, 00 }, ||
-    ||     { 00, 00, ░░, 00, 00, 00, 00, 00, ░░ }  ||     { ██, 00, ░░, 00, 00, 00, ██, 00, ░░ }  || 
-    ||  }                                          || }                                           ||
+    ||     { 00, 00, 00, 00, 00, 00, 00, 00, 00 }, ||     { 00, ██, 00, 00, ██, ██, 00, ██, 00 }, ||
+    ||     { 00, 00, 00, 00, 00, 00, 00, 00, 00 }, ||     { ██, 00, 00, ██, 00, ██, ██, 00, 00 }, ||
+    ||     { 00, 00, 00, 00, 00, 00, 00, 00, 00 }  ||     { ██, 00, ██, 00, 00, 00, ██, 00, ██ }  || 
+    || }                                           || }                                           ||
     ||=============================================||=============================================||
     */
 
@@ -92,7 +63,7 @@ for (int amountOfCartons = 0; amountOfCartons < 6; amountOfCartons++)
         for (int iColumn = 0; iColumn < COLUMNS; iColumn++)
         {
             // Genero un numero aleatorio entre el rango de la columna actual
-            int randomNumberForCarton = random.Next(
+            int randomNumberForCarton = RandomInt.Next(
                 (((iColumn == 0) ? 1 : 0) + (iColumn * 10)), // Min: 1 -> 10 -> 20 -> 30 -> ... -> 70 -> 80 
                 (((iColumn == (COLUMNS - 1)) ? 11 : 10) + (iColumn * 10)) // Max 10 -> 20 -> 30 .. -> 80 -> 91 (11 + (8 * 10))
                 );
