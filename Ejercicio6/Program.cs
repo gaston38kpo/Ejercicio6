@@ -4,7 +4,7 @@
 // FECHA:   25/05/2022          //
 //////////////////////////////////
 
-Console.Title = "PoloTic Cordoba - Tarea 6 - GIACOBINI GASTÓN 2022 - v1.1";
+Console.Title = "PoloTic Cordoba - Tarea 6 - GIACOBINI GASTÓN 2022 - v2.0";
 
 int ROWS = 3;
 int COLUMNS = 9;
@@ -12,123 +12,78 @@ int WHITESPACE = 99;
 
 Random random = new Random();
 
+Console.WriteLine("\n");
+
 for (int amountOfCartons = 0; amountOfCartons < 6; amountOfCartons++)
 {
 
     int[,] carton = new int[ROWS, COLUMNS];
 
-    // Generador de indices para cada hueco de las primeras dos filas
-    int[,] whitespacesIndexesPerRow = {
-        { -1, -1, -1, -1 },
-        { -2, -2, -2, -2 }
-    };
-
-    for (int iRow = 0; iRow < 2; iRow++)
-    {
-        for (int iColumn = 0; iColumn < 4; iColumn++)
-        {
-            int randomIndex = random.Next(0, 9);
-
-            bool isRandomIndexAlreadyInRow = false;
-            bool firstAndSecondRowsAreEquals = true;
-            for (int iColumnToQuickLook = 0; iColumnToQuickLook < 4; iColumnToQuickLook++)
-            {
-                if (whitespacesIndexesPerRow[iRow, iColumnToQuickLook] == randomIndex)
-                    isRandomIndexAlreadyInRow = true;
-
-                if (whitespacesIndexesPerRow[0, iColumnToQuickLook] != whitespacesIndexesPerRow[1, iColumnToQuickLook])
-                    firstAndSecondRowsAreEquals = false;
-            }
-
-            if (isRandomIndexAlreadyInRow || firstAndSecondRowsAreEquals)
-                iColumn--;
-            else
-                whitespacesIndexesPerRow[iRow, iColumn] = randomIndex;
-        }
-    }
-    /* Ejemplo de output
-    ||===============================||===========================||
-    ||             Antes             ||          Despues          ||
-    ||===============================||===========================||
-    ||    {                          ||    {                      ||
-    ||        { -1, -1, -1, -1 },    ||        { 1, 5, 4, 7 },    ||
-    ||        { -2, -2, -2, -2 }     ||        { 5, 3, 6, 0 }     ||
-    ||    }                          ||    }                      ||
-    ||===============================||===========================||
-
-    */
-
-    // Coloco los huecos generados anteriormente en las dos primeras filas
-    for (int iRow = 0; iRow < 2; iRow++)
-    {
-        for (int iColumnForWhiteSpace = 0; iColumnForWhiteSpace < 4; iColumnForWhiteSpace++)
-        {
-            carton[iRow, whitespacesIndexesPerRow[iRow, iColumnForWhiteSpace]] = WHITESPACE;
-        }
-    }
-    /* Ejemplo de output
-    ||===========================||=============================================||=============================================||
-    || whitespacesIndexesPerRow: ||              carton(antes):                 ||             carton(despues):                ||
-    ||===========================||=============================================||=============================================||
-    ||    {                      || {                                           || {                                           ||
-    ||        { 1, 5, 4, 7 },    ||   ->{ 00, 00, 00, 00, 00, 00, 00, 00, 00 }, ||   ->{ 00, 99, 00, 00, 99, 99, 00, 99, 00 }, ||
-    ||        { 5, 3, 6, 0 }     ||   ->{ 00, 00, 00, 00, 00, 00, 00, 00, 00 }, ||   ->{ 99, 00, 00, 99, 00, 99, 99, 00, 00 }, ||
-    ||    }                      ||     { 00, 00, 00, 00, 00, 00, 00, 00, 00 }  ||     { 00, 00, 00, 00, 00, 00, 00, 00, 00 }  ||
-    ||                           || }                                           || }                                           ||
-    ||===========================||=============================================||=============================================||
-    */
-
-    // Coloco los huecos en la ultima fila
-    // --Detecta dos numeros consecutivos en columna y coloca un hueco 
-    int whiteSpacesPerRow = 4;
-
+    // Generador de 12 espacios en blanco 2.0
+    // --Pone 9 espacios en blanco en cada una de las 9 Columnas con Fila aleatoria
+    // --(siempre y cuando no supere los 4 por fila)
     for (int iColumn = 0; iColumn < COLUMNS; iColumn++)
     {
-        if (carton[0, iColumn] != WHITESPACE && carton[1, iColumn] != WHITESPACE)
-        {
-            if (whiteSpacesPerRow == 0)
-                break;
+        int randomRowIndex = random.Next(0, ROWS);
 
-            carton[2, iColumn] = WHITESPACE;
-            whiteSpacesPerRow--;
+        int whitespacesInCurrentRow = 0;
+        for (int iColumnChecker = 0; iColumnChecker < COLUMNS; iColumnChecker++)
+            if (carton[randomRowIndex, iColumnChecker] == WHITESPACE)
+                whitespacesInCurrentRow++;
+
+        if (whitespacesInCurrentRow < 4)
+            carton[randomRowIndex, iColumn] = WHITESPACE;
+        else
+            iColumn--;
+    }
+    /* Ejemplo de output
+    ||=============================================||=============================================||
+    ||              carton(antes):                 ||                 carton(despues):            ||
+    ||=============================================||=============================================||
+    || {                                           || {                                           ||
+    ||     { 00, 00, 00, 00, 00, 00, 00, 00, 00 }, ||     { 00, ██, 00, 00, ██, 00, 00, ██, 00 }, ||
+    ||     { 00, 00, 00, 00, 00, 00, 00, 00, 00 }, ||     { ██, 00, 00, ██, 00, ██, ██, 00, 00 }, ||
+    ||     { 00, 00, 00, 00, 00, 00, 00, 00, 00 }  ||     { 00, 00, ██, 00, 00, 00, 00, 00, ██ }  || 
+    || }                                           ||  }                                          ||
+    ||=============================================||=============================================||
+                                                      (De 12 espacios en blanco usé 9 y sobran 3)
+    */
+
+    // --Coloca los 3 espacios faltantes
+    int remainingWhitespaces = 3;
+    while (remainingWhitespaces > 0)
+    {
+        int randomRowIndex = random.Next(0, ROWS);
+        int randomColumnIndex = random.Next(0, COLUMNS);
+
+        int whitespacesInCurrentColumn = 0;
+        for (int iRowChecker = 0; iRowChecker < ROWS; iRowChecker++)
+            if (carton[iRowChecker, randomColumnIndex] == WHITESPACE)
+                whitespacesInCurrentColumn++;
+
+        int whitespacesInCurrentRow = 0;
+        for (int iColumnChecker = 0; iColumnChecker < COLUMNS; iColumnChecker++)
+            if (carton[randomRowIndex, iColumnChecker] == WHITESPACE)
+                whitespacesInCurrentRow++;
+
+        if (carton[randomRowIndex, randomColumnIndex] != WHITESPACE &&
+            whitespacesInCurrentColumn == 1 &&
+            whitespacesInCurrentRow < 4)
+        {
+            carton[randomRowIndex, randomColumnIndex] = WHITESPACE;
+            remainingWhitespaces--;
         }
     }
     /* Ejemplo de output
     ||=============================================||=============================================||
     ||              carton(antes):                 ||                 carton(despues):            ||
     ||=============================================||=============================================||
-    || {                                           || {             ↓↓                      ↓↓    ||
-    ||     { 00, 99, 00, 00, 99, 99, 00, 99, 00 }, ||     { 00, 99, 00, 00, 99, 99, 00, 99, 00 }, ||
-    ||     { 99, 00, 00, 99, 00, 99, 99, 00, 00 }, ||     { 99, 00, 00, 99, 00, 99, 99, 00, 00 }, ||
-    ||   ->{ 00, 00, 00, 00, 00, 00, 00, 00, 00 }  ||   ->{ 00, 00, 99, 00, 00, 00, 00, 00, 99 }  || 
-    ||  }                                          ||  }                                          ||
+    || {                                           || {                                           ||
+    ||     { 00, ░░, 00, 00, ░░, 00, 00, ░░, 00 }, ||     { 00, ░░, 00, 00, ░░, ██, 00, ░░, 00 }, ||
+    ||     { ░░, 00, 00, ░░, 00, ░░, ░░, 00, 00 }, ||     { ░░, 00, 00, ░░, 00, ░░, ░░, 00, 00 }, ||
+    ||     { 00, 00, ░░, 00, 00, 00, 00, 00, ░░ }  ||     { ██, 00, ░░, 00, 00, 00, ██, 00, ░░ }  || 
+    ||  }                                          || }                                           ||
     ||=============================================||=============================================||
-                                                    (De 4 huecos por fila usé 2, entonces me sobran otros 2)
-    */
-
-    // --Si sobraron huecos del paso anterior, coloco huecos moviendome de manera aleatoria por las columnas
-    while (whiteSpacesPerRow > 0)
-    {
-        int randomColumn = random.Next(0, COLUMNS);
-
-        if ((whiteSpacesPerRow != 0) && // Si sobran huecos y 
-            (carton[2, randomColumn] != WHITESPACE) && // No estoy pisando otro hueco y
-            !(carton[0, randomColumn] == WHITESPACE && carton[1, randomColumn] == WHITESPACE)) // Sus dos casillas superiores no son huecos
-        {
-            carton[2, randomColumn] = WHITESPACE;
-            whiteSpacesPerRow--;
-        }
-    }
-    /* Ejemplo de output
-    ||=============================================||=============================================||=============================================||
-    ||               carton(antes):                ||            carton(posibles lugares):        ||              carton(despues):               ||
-    ||=============================================||=============================================||=============================================||
-    || {                                           || {                                           || {                                           ||
-    ||     { 00, 99, 00, 00, 99, 99, 00, 99, 00 }, ||     { 00, 99, 00, 00, 99, 99, 00, 99, 00 }, ||     { 00, 99, 00, 00, 99, 99, 00, 99, 00 }, ||
-    ||     { 99, 00, 00, 99, 00, 99, 99, 00, 00 }, ||     { 99, 00, 00, 99, 00, 99, 99, 00, 00 }, ||     { 99, 00, 00, 99, 00, 99, 99, 00, 00 }, ||
-    ||   ->{ 00, 00, 99, 00, 00, 00, 00, 00, 99 }  ||   ->{ 00, 00, 99, 00, 00, 00, 00, 00, 99 }  ||   ->{ 99, 00, 99, 00, 00, 00, 99, 00, 99 }  || 
-    || }                                           || }     ↑↑  ↑↑      ↑↑  ↑↑      ↑↑  ↑↑        || }     ↑↑                      ↑↑            ||
-    ||=============================================||=============================================||=============================================||
     */
 
     // Genero los numeros aleatorios para el carton respetando los huecos de las dos primeras filas
@@ -138,8 +93,8 @@ for (int amountOfCartons = 0; amountOfCartons < 6; amountOfCartons++)
         {
             // Genero un numero aleatorio entre el rango de la columna actual
             int randomNumberForCarton = random.Next(
-                ( ((iColumn == 0) ? 1 : 0) + (iColumn * 10) ), // Min: 1 -> 10 -> 20 -> 30 -> ... -> 70 -> 80 
-                ( ((iColumn == (COLUMNS - 1)) ? 11 : 10) + (iColumn * 10) ) // Max 10 -> 20 -> 30 .. -> 80 -> 91 (11 + (8 * 10))
+                (((iColumn == 0) ? 1 : 0) + (iColumn * 10)), // Min: 1 -> 10 -> 20 -> 30 -> ... -> 70 -> 80 
+                (((iColumn == (COLUMNS - 1)) ? 11 : 10) + (iColumn * 10)) // Max 10 -> 20 -> 30 .. -> 80 -> 91 (11 + (8 * 10))
                 );
             /* randomNumberForCarton:  ( 1,10) (10,20) (20,30) (30,40) (40,50) (50,60) (60,70) (70,80) (80,91) 
                 rangos            ->  |  1-9  | 10-19 | 20-29 | 30-39 | 40-49 | 50-59 | 60-69 | 70-79 | 80-90 |
@@ -167,9 +122,9 @@ for (int amountOfCartons = 0; amountOfCartons < 6; amountOfCartons++)
     ||              carton(antes):                 ||                 carton(despues):            ||
     ||=============================================||=============================================||
     || {                                           || {                                           ||
-    ||     { 00, 99, 00, 00, 99, 99, 00, 99, 00 }, ||     { 05, 99, 28, 37, 99, 99, 64, 99, 90 }, ||
-    ||     { 99, 00, 00, 99, 00, 99, 99, 00, 00 }, ||     { 99, 16, 20, 99, 41, 99, 99, 77, 82 }, ||
-    ||     { 99, 00, 99, 00, 00, 00, 99, 00, 99 }  ||     { 99, 12, 99, 33, 49, 56, 99, 75, 99 }  ||
+    ||     { 00, ░░, 00, 00, ░░, ░░, 00, ░░, 00 }, ||     { 05, ░░, 28, 37, ░░, ░░, 64, ░░, 90 }, ||
+    ||     { ░░, 00, 00, ░░, 00, ░░, ░░, 00, 00 }, ||     { ░░, 16, 20, ░░, 41, ░░, ░░, 77, 82 }, ||
+    ||     { ░░, 00, ░░, 00, 00, 00, ░░, 00, ░░ }  ||     { ░░, 12, ░░, 33, 49, 56, ░░, 75, ░░ }  ||
     || }                                           || }                                           ||
     ||=============================================||=============================================||
     */
@@ -177,9 +132,10 @@ for (int amountOfCartons = 0; amountOfCartons < 6; amountOfCartons++)
     // Muestro el Carton
     for (int iRow = 0; iRow < ROWS; iRow++)
     {
+        Console.Write("\t");
         for (int iColumn = 0; iColumn < COLUMNS; iColumn++)
         {
-            Console.Write($"{ (iColumn == 0 && carton[iRow, iColumn] != WHITESPACE ? "0" : "") }{ (carton[iRow, iColumn] != WHITESPACE ? carton[iRow, iColumn] : "░░") } ");
+            Console.Write($"{ (iColumn == 0 && carton[iRow, iColumn] != WHITESPACE ? "0" : "") }{ (carton[iRow, iColumn] != WHITESPACE ? carton[iRow, iColumn] : "██") } ");
         }
         Console.WriteLine();
     }
