@@ -16,11 +16,9 @@ Console.WriteLine("\n");
 
 for (int amountOfCartons = 0; amountOfCartons < 6; amountOfCartons++)
 {
-
     int[,] carton = new int[ROWS, COLUMNS];
 
     // Generador de 12 espacios en blanco 2.0
-    // --Coloca los 3 espacios faltantes
     int whitespaces = 12;
     while (whitespaces > 0)
     {
