@@ -14,7 +14,7 @@ Random RandomInt = new Random();
 
 Console.WriteLine("\n");
 
-for (int amountOfCartons = 0; amountOfCartons < 6; amountOfCartons++)
+for (int amountOfCartons = 0; amountOfCartons < 3; amountOfCartons++)
 {
 
     int[,] carton = new int[ROWS, COLUMNS];
@@ -101,17 +101,14 @@ for (int amountOfCartons = 0; amountOfCartons < 6; amountOfCartons++)
                columnas           ->      c0      c1      c2      c3      c4      c5      c6      c7      c8
             */
 
-            bool isRandomNumberInCarton = false;
-            foreach (int cartonNumber in carton)
-            {
-                if (cartonNumber == randomNumberForCarton)
-                {
-                    isRandomNumberInCarton = true;
-                    break;
-                }
-            }
+            
+            bool isRandomNumberInThisColumn = false;
+            for (int iRowChecker = 0; iRowChecker < ROWS; iRowChecker++)            
+                if (carton[iRowChecker, iColumn] == randomNumberForCarton)
+                    isRandomNumberInThisColumn = true;
+            
 
-            if (isRandomNumberInCarton)
+            if (isRandomNumberInThisColumn)
                 iColumn--;
             else if (carton[iRow, iColumn] != WHITESPACE)
                 carton[iRow, iColumn] = randomNumberForCarton;
@@ -135,7 +132,10 @@ for (int amountOfCartons = 0; amountOfCartons < 6; amountOfCartons++)
         Console.Write("\t");
         for (int iColumn = 0; iColumn < COLUMNS; iColumn++)
         {
-            Console.Write($"{ (iColumn == 0 && carton[iRow, iColumn] != WHITESPACE ? "0" : "") }{ (carton[iRow, iColumn] != WHITESPACE ? carton[iRow, iColumn] : "██") } ");
+            Console.BackgroundColor = (carton[iRow, iColumn] != WHITESPACE) ? ConsoleColor.White : (amountOfCartons % 4 == 0 ? ConsoleColor.Red : ConsoleColor.DarkGreen);
+            Console.ForegroundColor = ConsoleColor.Black;
+            Console.Write($" {(carton[iRow, iColumn] != WHITESPACE ? $"{carton[iRow, iColumn]:00}" : "  ")} ");
+            Console.ResetColor();
         }
         Console.WriteLine();
     }
