@@ -56,22 +56,24 @@ for (int amountOfCartons = 0; amountOfCartons < 3; amountOfCartons++)
         int randomRowIndex = RandomInt.Next(0, ROWS);
         int randomColumnIndex = RandomInt.Next(0, COLUMNS);
 
-        int whitespacesInCurrentColumn = 0;
-        for (int iRowChecker = 0; iRowChecker < ROWS; iRowChecker++)
-            if (carton[iRowChecker, randomColumnIndex] == WHITESPACE)
-                whitespacesInCurrentColumn++;
+        if (carton[randomRowIndex, randomColumnIndex] != WHITESPACE) {
+            int whitespacesInCurrentColumn = 0;
+            for (int iRowChecker = 0; iRowChecker < ROWS; iRowChecker++)
+                if (carton[iRowChecker, randomColumnIndex] == WHITESPACE)
+                    whitespacesInCurrentColumn++;
 
-        int whitespacesInCurrentRow = 0;
-        for (int iColumnChecker = 0; iColumnChecker < COLUMNS; iColumnChecker++)
-            if (carton[randomRowIndex, iColumnChecker] == WHITESPACE)
-                whitespacesInCurrentRow++;
 
-        if (carton[randomRowIndex, randomColumnIndex] != WHITESPACE &&
-            whitespacesInCurrentColumn == 1 &&
-            whitespacesInCurrentRow < 4)
-        {
-            carton[randomRowIndex, randomColumnIndex] = WHITESPACE;
-            remainingWhitespaces--;
+            int whitespacesInCurrentRow = 0;
+            for (int iColumnChecker = 0; iColumnChecker < COLUMNS; iColumnChecker++)
+                if (carton[randomRowIndex, iColumnChecker] == WHITESPACE)
+                    whitespacesInCurrentRow++;
+            
+
+            if (whitespacesInCurrentColumn == 1 && whitespacesInCurrentRow < 4) {
+                carton[randomRowIndex, randomColumnIndex] = WHITESPACE;
+                remainingWhitespaces--;
+
+            }
         }
     }
     /* Ejemplo de output
@@ -101,12 +103,12 @@ for (int amountOfCartons = 0; amountOfCartons < 3; amountOfCartons++)
                columnas           ->      c0      c1      c2      c3      c4      c5      c6      c7      c8
             */
 
-            
+
             bool isRandomNumberInThisColumn = false;
-            for (int iRowChecker = 0; iRowChecker < ROWS; iRowChecker++)            
+            for (int iRowChecker = 0; iRowChecker < ROWS; iRowChecker++)
                 if (carton[iRowChecker, iColumn] == randomNumberForCarton)
                     isRandomNumberInThisColumn = true;
-            
+
 
             if (isRandomNumberInThisColumn)
                 iColumn--;
