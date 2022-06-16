@@ -20,8 +20,8 @@ for (int amountOfCartons = 0; amountOfCartons < 3; amountOfCartons++)
     int[,] carton = new int[ROWS, COLUMNS];
 
     // Generador de 12 espacios en blanco 2.0
-    // --Pone 9 espacios en blanco en cada una de las 9 Columnas con Fila aleatoria
-    // --(siempre y cuando no supere los 4 por fila)
+    // --Pone 9 espacios en blanco, 1 en cada una de las 9 Columnas (en Fila aleatoria)
+    // --siempre y cuando no supere los 4 por fila.
     for (int iColumn = 0; iColumn < COLUMNS; iColumn++)
     {
         int randomRowIndex = RandomInt.Next(0, ROWS);
